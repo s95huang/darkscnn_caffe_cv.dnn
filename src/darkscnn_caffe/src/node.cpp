@@ -10,6 +10,7 @@ class LaneDetectionNode
 {
 private:
     ros::NodeHandle nh_;
+    ros::NodeHandle pnh_;
     image_transport::ImageTransport it_;
     image_transport::Subscriber image_sub_;
     image_transport::Publisher image_pub_;
@@ -22,15 +23,15 @@ private:
     double alpha_;
 
 public:
-    LaneDetectionNode() : it_(nh_), confidence_threshold_(0.95) {
+    LaneDetectionNode() : nh_(), pnh_("~"), it_(nh_), confidence_threshold_(0.95) {
 
         std::string model_path, weight_path;
-        nh_.param<std::string>("model_path", model_path, "$(find darkscnn_caffe)/data/deploy.prototxt");
-        nh_.param<std::string>("weight_path", weight_path, "$(find darkscnn_caffe)/data/deploy.caffemodel");
+        pnh_.param<std::string>("model_path", model_path, "");
+        pnh_.param<std::string>("weight_path", weight_path, "");
 
         // Load lane detection parameters
-        nh_.param<double>("confidence_threshold", confidence_threshold_, 0.95);
-        nh_.param<double>("alpha", alpha_, 0.75);
+        pnh_.param<double>("confidence_threshold", confidence_threshold_, 0.95);
+        pnh_.param<double>("alpha", alpha_, 0.75);
 
         // Load Caffe model
         net_ = cv::dnn::readNetFromCaffe(model_path, weight_path);
