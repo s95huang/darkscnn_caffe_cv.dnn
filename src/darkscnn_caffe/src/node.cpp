@@ -21,6 +21,11 @@ private:
     cv::Mat mean_;
     std::vector<cv::Scalar> lane_colors_;
     double alpha_;
+    std::string lane_input_topic;
+    std::string lane_visual_topic; // image topic for visualization
+
+
+
 
 public:
     LaneDetectionNode() : nh_(), pnh_("~"), it_(nh_), confidence_threshold_(0.95) {
@@ -32,6 +37,10 @@ public:
         // Load lane detection parameters
         pnh_.param<double>("confidence_threshold", confidence_threshold_, 0.95);
         pnh_.param<double>("alpha", alpha_, 0.75);
+
+        pnh_.param<std::string>("lane_input_topic", lane_input_topic, "input/image");
+        pnh_.param<std::string>("lane_visual_topic", lane_visual_topic, "output/image");
+        
 
         // Load Caffe model
         net_ = cv::dnn::readNetFromCaffe(model_path, weight_path);

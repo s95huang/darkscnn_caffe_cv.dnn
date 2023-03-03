@@ -10,7 +10,11 @@ endif()
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 
-find_package(OpenCV REQUIRED)
+# force to use OpenCV with CUDA
+find_package(OpenCV REQUIRED
+NO_MODULE # should be optional, tells CMake to use config mode
+PATHS /usr/local # look here
+NO_DEFAULT_PATH) # and don't look anywhere else
 
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
