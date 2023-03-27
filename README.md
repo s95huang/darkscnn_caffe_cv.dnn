@@ -1,6 +1,6 @@
 # darkscnn_caffe_cv.dnn
-using cv:dnn caffe to load and inference darkscnn models
-
+using cv:dnn caffe to load and inference darkscnn models with ros1 integration.
+It doesn't need caffe modules if you compile CV with CUDA support.
 
 
 ### bug 
@@ -10,16 +10,21 @@ terminate called after throwing an instance of 'cv::Exception'
 ```
 * looks like model error 
 
-* Apollo's method
-
-Apollo deployed this caffe model by using TensorRT API to replace some components with equivalent CUDA ops.
-For example, slice layer from caffe is rewritten using CUDA layer.
-
-* Aborting further development
+  * The output should be 1 X 13 X img_size. 
+  * The cv.dnn deployment method causes dimmension mismatch.
+  * Aborting further development
 
 
+### Apollo's method
+
+* Apollo deployed this caffe model by using TensorRT API to replace some components with equivalent CUDA ops.
+  * For example, slice layer from caffe is rewritten using CUDA layer.
+
+* Models are obtained from Apollo's Github repo.
+  * Please refer to their website for licenses etc.
 
 ## ref
 
 https://docs.opencv.org/4.5.5/d5/de7/tutorial_dnn_googlenet.html
+
 https://github.com/ApolloAuto/apollo
